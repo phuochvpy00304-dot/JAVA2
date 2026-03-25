@@ -1,17 +1,16 @@
 package ASM.service;
 
 import ASM.model.Document;
-import ASM.model.Copy;
 import ASM.exception.DuplicateIdException;
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Service quản lý các thao tác CRUD cho Tài liệu
- * Sử dụng Map để lưu trữ và tra cứu nhanh theo ID
+ * Service quan ly cac thao tac CRUD cho Tai lieu
+ * Su dung Map de luu tru va tra cuu nhanh theo ID
  */
 public class DocumentService {
-    // Map lưu trữ tài liệu với key là ID
+    // Map luu tru tai lieu voi key la ID
     private Map<String, Document> documents;
 
     public DocumentService() {
@@ -19,58 +18,58 @@ public class DocumentService {
     }
 
     /**
-     * Thêm tài liệu mới
+     * Them tai lieu moi
      * 
-     * @throws DuplicateIdException nếu ID đã tồn tại
+     * @throws DuplicateIdException neu ID da ton tai
      */
     public void addDocument(Document document) throws DuplicateIdException {
         if (documents.containsKey(document.getId())) {
-            throw new DuplicateIdException("Mã tài liệu '" + document.getId() + "' đã tồn tại!");
+            throw new DuplicateIdException("Ma tai lieu '" + document.getId() + "' da ton tai!");
         }
         documents.put(document.getId(), document);
-        System.out.println("✓ Đã thêm tài liệu: " + document.getTitle());
+        System.out.println("Da them tai lieu: " + document.getTitle());
     }
 
     /**
-     * Cập nhật thông tin tài liệu
+     * Cap nhat thong tin tai lieu
      */
     public void updateDocument(Document document) {
         if (documents.containsKey(document.getId())) {
             documents.put(document.getId(), document);
-            System.out.println("✓ Đã cập nhật tài liệu: " + document.getTitle());
+            System.out.println("Da cap nhat tai lieu: " + document.getTitle());
         } else {
-            System.out.println("✗ Không tìm thấy tài liệu với ID: " + document.getId());
+            System.out.println("Khong tim thay tai lieu voi ID: " + document.getId());
         }
     }
 
     /**
-     * Xóa tài liệu theo ID
+     * Xoa tai lieu theo ID
      */
     public void deleteDocument(String id) {
         Document removed = documents.remove(id);
         if (removed != null) {
-            System.out.println("✓ Đã xóa tài liệu: " + removed.getTitle());
+            System.out.println("Da xoa tai lieu: " + removed.getTitle());
         } else {
-            System.out.println("✗ Không tìm thấy tài liệu với ID: " + id);
+            System.out.println("Khong tim thay tai lieu voi ID: " + id);
         }
     }
 
     /**
-     * Tìm tài liệu theo ID
+     * Tim tai lieu theo ID
      */
     public Document findById(String id) {
         return documents.get(id);
     }
 
     /**
-     * Lấy tất cả tài liệu
+     * Lay tat ca tai lieu
      */
     public List<Document> getAllDocuments() {
         return new ArrayList<>(documents.values());
     }
 
     /**
-     * Tìm kiếm tài liệu theo tiêu đề (không phân biệt hoa thường)
+     * Tim kiem tai lieu theo tieu de (khong phan biet hoa thuong)
      */
     public List<Document> searchByTitle(String keyword) {
         return documents.values().stream()
@@ -79,7 +78,7 @@ public class DocumentService {
     }
 
     /**
-     * Tìm kiếm tài liệu theo tác giả
+     * Tim kiem tai lieu theo tac gia
      */
     public List<Document> searchByAuthor(String author) {
         return documents.values().stream()
@@ -88,7 +87,7 @@ public class DocumentService {
     }
 
     /**
-     * Tìm kiếm tài liệu theo thể loại
+     * Tim kiem tai lieu theo the loai
      */
     public List<Document> searchByCategory(String category) {
         return documents.values().stream()
@@ -97,7 +96,7 @@ public class DocumentService {
     }
 
     /**
-     * Sắp xếp tài liệu theo tiêu đề
+     * Sap xep tai lieu theo tieu de
      */
     public List<Document> sortByTitle() {
         return documents.values().stream()
@@ -106,7 +105,7 @@ public class DocumentService {
     }
 
     /**
-     * Sắp xếp tài liệu theo tác giả
+     * Sap xep tai lieu theo tac gia
      */
     public List<Document> sortByAuthor() {
         return documents.values().stream()
@@ -115,10 +114,10 @@ public class DocumentService {
     }
 
     /**
-     * Phân trang danh sách tài liệu
+     * Phan trang danh sach tai lieu
      * 
-     * @param page     Số trang (bắt đầu từ 1)
-     * @param pageSize Số lượng tài liệu mỗi trang
+     * @param page     So trang (bat dau tu 1)
+     * @param pageSize So luong tai lieu moi trang
      */
     public List<Document> getDocumentsWithPagination(int page, int pageSize) {
         return documents.values().stream()
@@ -128,34 +127,34 @@ public class DocumentService {
     }
 
     /**
-     * Đếm tổng số tài liệu
+     * Dem tong so tai lieu
      */
     public int getTotalDocuments() {
         return documents.size();
     }
 
     /**
-     * Hiển thị tất cả tài liệu
+     * Hien thi tat ca tai lieu
      */
     public void displayAllDocuments() {
         if (documents.isEmpty()) {
-            System.out.println("Không có tài liệu nào.");
+            System.out.println("Khong co tai lieu nao.");
             return;
         }
 
-        System.out.println("\n=== DANH SÁCH TÀI LIỆU ===");
+        System.out.println("\n=== DANH SACH TAI LIEU ===");
         documents.values().forEach(doc -> {
             System.out.println(doc);
-            System.out.println("  Số bản sao: " + doc.getCopies().size());
+            System.out.println("  So ban sao: " + doc.getCopies().size());
         });
     }
 
-    // Setter cho việc load dữ liệu từ file
+    // Setter cho viec load du lieu tu file
     public void setDocuments(Map<String, Document> documents) {
         this.documents = documents;
     }
 
-    // Getter cho việc lưu dữ liệu vào file
+    // Getter cho viec luu du lieu vao file
     public Map<String, Document> getDocuments() {
         return documents;
     }

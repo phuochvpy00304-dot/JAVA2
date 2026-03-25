@@ -11,19 +11,19 @@ import java.util.HashMap;
 
 /**
  * Data Access Object cho Copy
- * Thực hiện các thao tác CRUD với database
+ * Thuc hien cac thao tac CRUD voi database
  */
 public class CopyDAO {
     
     /**
-     * Thêm bản sao mới vào database (alias cho insert)
+     * Them ban sao moi vao database (alias cho insert)
      */
     public boolean create(Copy copy) throws SQLException {
         return insert(copy);
     }
     
     /**
-     * Thêm bản sao mới vào database
+     * Them ban sao moi vao database
      */
     public boolean insert(Copy copy) throws SQLException {
         String sql = "INSERT INTO DOCUMENT_COPY (id, document_id, status) VALUES (?, ?, ?)";
@@ -37,17 +37,17 @@ public class CopyDAO {
             
             int rows = pstmt.executeUpdate();
             if (rows > 0) {
-                System.out.println("✓ Đã thêm bản sao vào database: " + copy.getId());
+                System.out.println("Da them ban sao vao database: " + copy.getId());
                 return true;
             }
         } catch (SQLException e) {
-            System.err.println("✗ Lỗi khi thêm bản sao: " + e.getMessage());
+            System.err.println("Loi khi them ban sao: " + e.getMessage());
         }
         return false;
     }
     
     /**
-     * Cập nhật trạng thái bản sao
+     * Cap nhat trang thai ban sao
      */
     public boolean update(Copy copy) throws SQLException {
         String sql = "UPDATE DOCUMENT_COPY SET status = ? WHERE id = ?";
@@ -60,17 +60,17 @@ public class CopyDAO {
             
             int rows = pstmt.executeUpdate();
             if (rows > 0) {
-                System.out.println("✓ Đã cập nhật bản sao: " + copy.getId());
+                System.out.println("Da cap nhat ban sao: " + copy.getId());
                 return true;
             }
         } catch (SQLException e) {
-            System.err.println("✗ Lỗi khi cập nhật bản sao: " + e.getMessage());
+            System.err.println("Loi khi cap nhat ban sao: " + e.getMessage());
         }
         return false;
     }
     
     /**
-     * Xóa bản sao theo ID
+     * Xoa ban sao theo ID
      */
     public boolean delete(String id) throws SQLException {
         String sql = "DELETE FROM DOCUMENT_COPY WHERE id = ?";
@@ -82,17 +82,17 @@ public class CopyDAO {
             
             int rows = pstmt.executeUpdate();
             if (rows > 0) {
-                System.out.println("✓ Đã xóa bản sao ID: " + id);
+                System.out.println("Da xoa ban sao ID: " + id);
                 return true;
             }
         } catch (SQLException e) {
-            System.err.println("✗ Lỗi khi xóa bản sao: " + e.getMessage());
+            System.err.println("Loi khi xoa ban sao: " + e.getMessage());
         }
         return false;
     }
     
     /**
-     * Tìm bản sao theo ID
+     * Tim ban sao theo ID
      */
     public Copy findById(String id) {
         String sql = "SELECT * FROM DOCUMENT_COPY WHERE id = ?";
@@ -107,13 +107,13 @@ public class CopyDAO {
                 return extractCopyFromResultSet(rs);
             }
         } catch (SQLException e) {
-            System.err.println("✗ Lỗi khi tìm bản sao: " + e.getMessage());
+            System.err.println("Loi khi tim ban sao: " + e.getMessage());
         }
         return null;
     }
     
     /**
-     * Lấy tất cả bản sao
+     * Lay tat ca ban sao
      */
     public List<Copy> findAll() throws SQLException {
         List<Copy> copies = new ArrayList<>();
@@ -127,13 +127,13 @@ public class CopyDAO {
                 copies.add(extractCopyFromResultSet(rs));
             }
         } catch (SQLException e) {
-            System.err.println("✗ Lỗi khi lấy danh sách bản sao: " + e.getMessage());
+            System.err.println("Loi khi lay danh sach ban sao: " + e.getMessage());
         }
         return copies;
     }
     
     /**
-     * Lấy tất cả bản sao của một tài liệu
+     * Lay tat ca ban sao cua mot tai lieu
      */
     public List<Copy> findByDocumentId(String documentId) throws SQLException {
         List<Copy> copies = new ArrayList<>();
@@ -149,13 +149,13 @@ public class CopyDAO {
                 copies.add(extractCopyFromResultSet(rs));
             }
         } catch (SQLException e) {
-            System.err.println("✗ Lỗi khi lấy bản sao theo tài liệu: " + e.getMessage());
+            System.err.println("Loi khi lay ban sao theo tai lieu: " + e.getMessage());
         }
         return copies;
     }
     
     /**
-     * Lấy bản sao theo trạng thái
+     * Lay ban sao theo trang thai
      */
     public List<Copy> findByStatus(CopyStatus status) {
         List<Copy> copies = new ArrayList<>();
@@ -171,14 +171,14 @@ public class CopyDAO {
                 copies.add(extractCopyFromResultSet(rs));
             }
         } catch (SQLException e) {
-            System.err.println("✗ Lỗi khi lấy bản sao theo trạng thái: " + e.getMessage());
+            System.err.println("Loi khi lay ban sao theo trang thai: " + e.getMessage());
         }
         return copies;
     }
     
     /**
-     * Cập nhật trạng thái nhiều bản sao cùng lúc (sử dụng Transaction)
-     * Thay đổi trạng thái của tất cả bản sao thuộc một tài liệu
+     * Cap nhat trang thai nhieu ban sao cung luc (su dung Transaction)
+     * Thay doi trang thai cua tat ca ban sao thuoc mot tai lieu
      */
     public boolean updateStatusBatch(String documentId, CopyStatus oldStatus, CopyStatus newStatus) {
         String sql = "UPDATE DOCUMENT_COPY SET status = ? WHERE document_id = ? AND status = ?";
@@ -186,7 +186,7 @@ public class CopyDAO {
         
         try {
             conn = DatabaseConnection.getConnection();
-            // Tắt auto-commit để sử dụng transaction
+            // Tat auto-commit de su dung transaction
             conn.setAutoCommit(false);
             
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -198,38 +198,38 @@ public class CopyDAO {
             
             // Commit transaction
             conn.commit();
-            System.out.println("✓ Đã cập nhật " + rows + " bản sao từ " + 
+            System.out.println("Da cap nhat " + rows + " ban sao tu " + 
                              oldStatus + " sang " + newStatus);
             
             pstmt.close();
             return true;
             
         } catch (SQLException e) {
-            System.err.println("✗ Lỗi khi cập nhật batch: " + e.getMessage());
-            // Rollback nếu có lỗi
+            System.err.println("Loi khi cap nhat batch: " + e.getMessage());
+            // Rollback neu co loi
             if (conn != null) {
                 try {
                     conn.rollback();
-                    System.out.println("⚠ Đã rollback transaction.");
+                    System.out.println("Da rollback transaction.");
                 } catch (SQLException ex) {
-                    System.err.println("✗ Lỗi khi rollback: " + ex.getMessage());
+                    System.err.println("Loi khi rollback: " + ex.getMessage());
                 }
             }
             return false;
         } finally {
-            // Bật lại auto-commit
+            // Bat lai auto-commit
             if (conn != null) {
                 try {
                     conn.setAutoCommit(true);
                 } catch (SQLException e) {
-                    System.err.println("✗ Lỗi khi bật auto-commit: " + e.getMessage());
+                    System.err.println("Loi khi bat auto-commit: " + e.getMessage());
                 }
             }
         }
     }
     
     /**
-     * Thêm nhiều bản sao cùng lúc (sử dụng Transaction)
+     * Them nhieu ban sao cung luc (su dung Transaction)
      */
     public boolean insertBatch(List<Copy> copies) {
         String sql = "INSERT INTO DOCUMENT_COPY (id, document_id, status) VALUES (?, ?, ?)";
@@ -237,7 +237,7 @@ public class CopyDAO {
         
         try {
             conn = DatabaseConnection.getConnection();
-            conn.setAutoCommit(false);  // Bắt đầu transaction
+            conn.setAutoCommit(false);  // Bat dau transaction
             
             PreparedStatement pstmt = conn.prepareStatement(sql);
             
@@ -245,25 +245,25 @@ public class CopyDAO {
                 pstmt.setString(1, copy.getId());
                 pstmt.setString(2, copy.getDocumentId());
                 pstmt.setString(3, copy.getStatus().name());
-                pstmt.addBatch();  // Thêm vào batch
+                pstmt.addBatch();  // Them vao batch
             }
             
-            int[] results = pstmt.executeBatch();  // Thực thi batch
+            int[] results = pstmt.executeBatch();  // Thuc thi batch
             conn.commit();  // Commit transaction
             
-            System.out.println("✓ Đã thêm " + results.length + " bản sao vào database.");
+            System.out.println("Da them " + results.length + " ban sao vao database.");
             
             pstmt.close();
             return true;
             
         } catch (SQLException e) {
-            System.err.println("✗ Lỗi khi thêm batch: " + e.getMessage());
+            System.err.println("Loi khi them batch: " + e.getMessage());
             if (conn != null) {
                 try {
                     conn.rollback();
-                    System.out.println("⚠ Đã rollback transaction.");
+                    System.out.println("Da rollback transaction.");
                 } catch (SQLException ex) {
-                    System.err.println("✗ Lỗi khi rollback: " + ex.getMessage());
+                    System.err.println("Loi khi rollback: " + ex.getMessage());
                 }
             }
             return false;
@@ -272,14 +272,14 @@ public class CopyDAO {
                 try {
                     conn.setAutoCommit(true);
                 } catch (SQLException e) {
-                    System.err.println("✗ Lỗi khi bật auto-commit: " + e.getMessage());
+                    System.err.println("Loi khi bat auto-commit: " + e.getMessage());
                 }
             }
         }
     }
     
     /**
-     * Thống kê số lượng bản sao theo trạng thái
+     * Thong ke so luong ban sao theo trang thai
      */
     public Map<CopyStatus, Long> getStatisticsByStatus() throws SQLException {
         Map<CopyStatus, Long> stats = new HashMap<>();
@@ -303,7 +303,7 @@ public class CopyDAO {
     }
     
     /**
-     * Hiển thị thống kê (phương thức cũ - giữ lại để tương thích)
+     * Hien thi thong ke (phuong thuc cu - giu lai de tuong thich)
      */
     public void displayStatisticsByStatus() {
         String sql = """
@@ -316,19 +316,19 @@ public class CopyDAO {
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             
-            System.out.println("\n=== THỐNG KÊ BẢN SAO THEO TRẠNG THÁI ===");
+            System.out.println("\n=== THONG KE BAN SAO THEO TRANG THAI ===");
             while (rs.next()) {
                 String status = rs.getString("status");
                 int count = rs.getInt("count");
-                System.out.println(CopyStatus.valueOf(status) + ": " + count + " bản");
+                System.out.println(CopyStatus.valueOf(status) + ": " + count + " ban");
             }
         } catch (SQLException e) {
-            System.err.println("✗ Lỗi khi thống kê: " + e.getMessage());
+            System.err.println("Loi khi thong ke: " + e.getMessage());
         }
     }
     
     /**
-     * Lấy thông tin bản sao kèm thông tin tài liệu (sử dụng JOIN)
+     * Lay thong tin ban sao kem thong tin tai lieu (su dung JOIN)
      */
     public void displayCopiesWithDocumentInfo() {
         String sql = """
@@ -342,23 +342,23 @@ public class CopyDAO {
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             
-            System.out.println("\n=== BẢN SAO VÀ THÔNG TIN TÀI LIỆU ===");
+            System.out.println("\n=== BAN SAO VA THONG TIN TAI LIEU ===");
             while (rs.next()) {
                 String copyId = rs.getString("id");
                 String status = rs.getString("status");
                 String title = rs.getString("title");
                 String author = rs.getString("author");
                 
-                System.out.printf("Bản sao %s [%s] - Tài liệu: %s (Tác giả: %s)%n",
+                System.out.printf("Ban sao %s [%s] - Tai lieu: %s (Tac gia: %s)%n",
                         copyId, CopyStatus.valueOf(status), title, author);
             }
         } catch (SQLException e) {
-            System.err.println("✗ Lỗi khi JOIN: " + e.getMessage());
+            System.err.println("Loi khi JOIN: " + e.getMessage());
         }
     }
     
     /**
-     * Trích xuất Copy từ ResultSet
+     * Trich xuat Copy tu ResultSet
      */
     private Copy extractCopyFromResultSet(ResultSet rs) throws SQLException {
         String id = rs.getString("id");

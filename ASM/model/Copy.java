@@ -3,30 +3,30 @@ package ASM.model;
 import java.io.Serializable;
 
 /**
- * Lớp đại diện cho Bản sao của tài liệu
- * Mỗi bản sao thuộc về một tài liệu và có trạng thái riêng
+ * Lop dai dien cho Ban sao cua tai lieu
+ * Moi ban sao thuoc ve mot tai lieu va co trang thai rieng
  */
 public class Copy implements Serializable {
     private static final long serialVersionUID = 1L;
     
-    private String id;              // Mã bản sao (duy nhất)
-    private String documentId;      // Mã tài liệu (FK)
-    private CopyStatus status;      // Trạng thái bản sao
-    private transient Document document;  // Tham chiếu đến tài liệu (không lưu vào file)
+    private String id;              // Ma ban sao (duy nhat)
+    private String documentId;      // Ma tai lieu (FK)
+    private CopyStatus status;      // Trang thai ban sao
+    private transient Document document;  // Tham chieu den tai lieu (khong luu vao file)
     
-    // Constructor mặc định
+    // Constructor mac dinh
     public Copy() {
-        this.status = CopyStatus.GOOD;  // Mặc định là còn tốt
+        this.status = CopyStatus.GOOD;  // Mac dinh la con tot
     }
     
-    // Constructor đầy đủ
+    // Constructor day du
     public Copy(String id, String documentId, CopyStatus status) {
         this.id = id;
         this.documentId = documentId;
         this.status = status;
     }
     
-    // Getters và Setters
+    // Getters va Setters
     public String getId() {
         return id;
     }

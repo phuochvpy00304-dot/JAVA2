@@ -7,8 +7,8 @@ import java.sql.*;
 import java.util.*;
 
 /**
- * GIAI ĐOẠN 2: Quản lý thư viện với cơ sở dữ liệu
- * Chức năng: CRUD tài liệu và bản sao, lưu/đọc từ database
+ * GIAI DOAN 2: Quan ly thu vien voi co so du lieu
+ * Chuc nang: CRUD tai lieu va ban sao, luu/doc tu database
  */
 public class LibraryManagementPhase2 {
     private DocumentDAO documentDAO;
@@ -20,25 +20,25 @@ public class LibraryManagementPhase2 {
         this.copyDAO = new CopyDAO();
         this.scanner = new Scanner(System.in);
         
-        // Khởi tạo database
+        // Khoi tao database
         initializeDatabase();
     }
     
     /**
-     * Khởi tạo database và tạo bảng nếu chưa có
+     * Khoi tao database va tao bang neu chua co
      */
     private void initializeDatabase() {
-        System.out.println("\n=== KHỞI TẠO CƠ SỞ DỮ LIỆU ===");
+        System.out.println("\n=== KHOI TAO CO SO DU LIEU ===");
         try (Connection conn = DatabaseConnection.getConnection()) {
             createTables(conn);
-            System.out.println("✓ Kết nối database thành công!");
+            System.out.println("Ket noi database thanh cong!");
         } catch (SQLException e) {
-            System.err.println("✗ Lỗi kết nối database: " + e.getMessage());
+            System.err.println("Loi ket noi database: " + e.getMessage());
         }
     }
     
     /**
-     * Tạo các bảng trong database
+     * Tao cac bang trong database
      */
     private void createTables(Connection conn) throws SQLException {
         String createDocumentsTable = 
@@ -62,19 +62,19 @@ public class LibraryManagementPhase2 {
     }
     
     /**
-     * Menu chính
+     * Menu chinh
      */
     public void showMenu() {
         while (true) {
             System.out.println("\n╔════════════════════════════════════════╗");
-            System.out.println("║   HỆ THỐNG QUẢN LÝ THƯ VIỆN - PHASE 2 ║");
+            System.out.println("║   HE THONG QUAN LY THU VIEN - PHASE 2  ║");
             System.out.println("╠════════════════════════════════════════╣");
-            System.out.println("║  1. Quản lý Tài liệu                   ║");
-            System.out.println("║  2. Quản lý Bản sao                    ║");
-            System.out.println("║  3. Tìm kiếm & Thống kê                ║");
-            System.out.println("║  0. Thoát                              ║");
+            System.out.println("║  1. Quan ly Tai lieu                   ║");
+            System.out.println("║  2. Quan ly Ban sao                    ║");
+            System.out.println("║  3. Tim kiem & Thong ke                ║");
+            System.out.println("║  0. Thoat                              ║");
             System.out.println("╚════════════════════════════════════════╝");
-            System.out.print("Chọn chức năng: ");
+            System.out.print("Chon chuc nang: ");
             
             int choice = getIntInput();
             
@@ -89,26 +89,26 @@ public class LibraryManagementPhase2 {
                     searchAndStatisticsMenu();
                     break;
                 case 0:
-                    System.out.println("Tạm biệt!");
+                    System.out.println("Tam biet!");
                     return;
                 default:
-                    System.out.println("Lựa chọn không hợp lệ!");
+                    System.out.println("Lua chon khong hop le!");
             }
         }
     }
     
     /**
-     * Menu quản lý tài liệu
+     * Menu quan ly tai lieu
      */
     private void documentMenu() {
         while (true) {
-            System.out.println("\n--- QUẢN LÝ TÀI LIỆU ---");
-            System.out.println("1. Thêm tài liệu");
-            System.out.println("2. Sửa tài liệu");
-            System.out.println("3. Xóa tài liệu");
-            System.out.println("4. Xem tất cả tài liệu");
-            System.out.println("0. Quay lại");
-            System.out.print("Chọn: ");
+            System.out.println("\n--- QUAN LY TAI LIEU ---");
+            System.out.println("1. Them tai lieu");
+            System.out.println("2. Sua tai lieu");
+            System.out.println("3. Xoa tai lieu");
+            System.out.println("4. Xem tat ca tai lieu");
+            System.out.println("0. Quay lai");
+            System.out.print("Chon: ");
             
             int choice = getIntInput();
             
@@ -128,123 +128,123 @@ public class LibraryManagementPhase2 {
                 case 0:
                     return;
                 default:
-                    System.out.println("Lựa chọn không hợp lệ!");
+                    System.out.println("Lua chon khong hop le!");
             }
         }
     }
     
     /**
-     * Thêm tài liệu mới
+     * Them tai lieu moi
      */
     private void addDocument() {
-        System.out.println("\n--- THÊM TÀI LIỆU MỚI ---");
+        System.out.println("\n--- THEM TAI LIEU MOI ---");
         
-        System.out.print("Mã tài liệu: ");
+        System.out.print("Ma tai lieu: ");
         String id = scanner.nextLine();
         
-        System.out.print("Tiêu đề: ");
+        System.out.print("Tieu de: ");
         String title = scanner.nextLine();
         
-        System.out.print("Tác giả: ");
+        System.out.print("Tac gia: ");
         String author = scanner.nextLine();
         
-        System.out.print("Thể loại: ");
+        System.out.print("The loai: ");
         String category = scanner.nextLine();
         
         Document document = new Document(id, title, author, category);
         
         try {
             documentDAO.create(document);
-            System.out.println("✓ Thêm tài liệu thành công!");
+            System.out.println("Them tai lieu thanh cong!");
         } catch (SQLException e) {
-            System.out.println("✗ Lỗi: " + e.getMessage());
+            System.out.println("Loi: " + e.getMessage());
         }
     }
     
     /**
-     * Cập nhật tài liệu
+     * Cap nhat tai lieu
      */
     private void updateDocument() {
-        System.out.println("\n--- CẬP NHẬT TÀI LIỆU ---");
-        System.out.print("Nhập mã tài liệu cần sửa: ");
+        System.out.println("\n--- CAP NHAT TAI LIEU ---");
+        System.out.print("Nhap ma tai lieu can sua: ");
         String id = scanner.nextLine();
         
         try {
             Document document = documentDAO.findById(id);
             if (document == null) {
-                System.out.println("✗ Không tìm thấy tài liệu!");
+                System.out.println("Khong tim thay tai lieu!");
                 return;
             }
             
-            System.out.println("Thông tin hiện tại: " + document);
+            System.out.println("Thong tin hien tai: " + document);
             
-            System.out.print("Tiêu đề mới (Enter để giữ nguyên): ");
+            System.out.print("Tieu de moi (Enter de giu nguyen): ");
             String title = scanner.nextLine();
             if (!title.isEmpty()) document.setTitle(title);
             
-            System.out.print("Tác giả mới (Enter để giữ nguyên): ");
+            System.out.print("Tac gia moi (Enter de giu nguyen): ");
             String author = scanner.nextLine();
             if (!author.isEmpty()) document.setAuthor(author);
             
-            System.out.print("Thể loại mới (Enter để giữ nguyên): ");
+            System.out.print("The loai moi (Enter de giu nguyen): ");
             String category = scanner.nextLine();
             if (!category.isEmpty()) document.setCategory(category);
             
             documentDAO.update(document);
-            System.out.println("✓ Cập nhật thành công!");
+            System.out.println("Cap nhat thanh cong!");
         } catch (SQLException e) {
-            System.out.println("✗ Lỗi: " + e.getMessage());
+            System.out.println("Loi: " + e.getMessage());
         }
     }
     
     /**
-     * Xóa tài liệu
+     * Xoa tai lieu
      */
     private void deleteDocument() {
-        System.out.println("\n--- XÓA TÀI LIỆU ---");
-        System.out.print("Nhập mã tài liệu cần xóa: ");
+        System.out.println("\n--- XOA TAI LIEU ---");
+        System.out.print("Nhap ma tai lieu can xoa: ");
         String id = scanner.nextLine();
         
         try {
             documentDAO.delete(id);
-            System.out.println("✓ Xóa thành công!");
+            System.out.println("Xoa thanh cong!");
         } catch (SQLException e) {
-            System.out.println("✗ Lỗi: " + e.getMessage());
+            System.out.println("Loi: " + e.getMessage());
         }
     }
     
     /**
-     * Xem tất cả tài liệu
+     * Xem tat ca tai lieu
      */
     private void viewAllDocuments() {
         try {
             List<Document> documents = documentDAO.findAll();
             
             if (documents.isEmpty()) {
-                System.out.println("Không có tài liệu nào.");
+                System.out.println("Khong co tai lieu nao.");
                 return;
             }
             
-            System.out.println("\n=== TẤT CẢ TÀI LIỆU ===");
+            System.out.println("\n=== TAT CA TAI LIEU ===");
             documents.forEach(System.out::println);
         } catch (SQLException e) {
-            System.out.println("✗ Lỗi: " + e.getMessage());
+            System.out.println("Loi: " + e.getMessage());
         }
     }
     
     /**
-     * Menu quản lý bản sao
+     * Menu quan ly ban sao
      */
     private void copyMenu() {
         while (true) {
-            System.out.println("\n--- QUẢN LÝ BẢN SAO ---");
-            System.out.println("1. Thêm bản sao");
-            System.out.println("2. Sửa trạng thái bản sao");
-            System.out.println("3. Xóa bản sao");
-            System.out.println("4. Xem bản sao theo tài liệu");
-            System.out.println("5. Xem tất cả bản sao");
-            System.out.println("0. Quay lại");
-            System.out.print("Chọn: ");
+            System.out.println("\n--- QUAN LY BAN SAO ---");
+            System.out.println("1. Them ban sao");
+            System.out.println("2. Sua trang thai ban sao");
+            System.out.println("3. Xoa ban sao");
+            System.out.println("4. Xem ban sao theo tai lieu");
+            System.out.println("5. Xem tat ca ban sao");
+            System.out.println("0. Quay lai");
+            System.out.print("Chon: ");
             
             int choice = getIntInput();
             
@@ -267,28 +267,28 @@ public class LibraryManagementPhase2 {
                 case 0:
                     return;
                 default:
-                    System.out.println("Lựa chọn không hợp lệ!");
+                    System.out.println("Lua chon khong hop le!");
             }
         }
     }
     
     /**
-     * Thêm bản sao mới
+     * Them ban sao moi
      */
     private void addCopy() {
-        System.out.println("\n--- THÊM BẢN SAO MỚI ---");
+        System.out.println("\n--- THEM BAN SAO MOI ---");
         
-        System.out.print("Mã bản sao: ");
+        System.out.print("Ma ban sao: ");
         String id = scanner.nextLine();
         
-        System.out.print("Mã tài liệu: ");
+        System.out.print("Ma tai lieu: ");
         String documentId = scanner.nextLine();
         
-        System.out.println("Trạng thái:");
+        System.out.println("Trang thai:");
         System.out.println("1. " + CopyStatus.GOOD);
         System.out.println("2. " + CopyStatus.DAMAGED);
         System.out.println("3. " + CopyStatus.LOST);
-        System.out.print("Chọn trạng thái: ");
+        System.out.print("Chon trang thai: ");
         int statusChoice = getIntInput();
         
         CopyStatus status = CopyStatus.GOOD;
@@ -301,33 +301,33 @@ public class LibraryManagementPhase2 {
         
         try {
             copyDAO.create(copy);
-            System.out.println("✓ Thêm bản sao thành công!");
+            System.out.println("Them ban sao thanh cong!");
         } catch (SQLException e) {
-            System.out.println("✗ Lỗi: " + e.getMessage());
+            System.out.println("Loi: " + e.getMessage());
         }
     }
     
     /**
-     * Cập nhật trạng thái bản sao
+     * Cap nhat trang thai ban sao
      */
     private void updateCopyStatus() {
-        System.out.println("\n--- CẬP NHẬT TRẠNG THÁI BẢN SAO ---");
-        System.out.print("Nhập mã bản sao: ");
+        System.out.println("\n--- CAP NHAT TRANG THAI BAN SAO ---");
+        System.out.print("Nhap ma ban sao: ");
         String id = scanner.nextLine();
         
         try {
             Copy copy = copyDAO.findById(id);
             if (copy == null) {
-                System.out.println("✗ Không tìm thấy bản sao!");
+                System.out.println("Khong tim thay ban sao!");
                 return;
             }
             
-            System.out.println("Trạng thái hiện tại: " + copy.getStatus());
-            System.out.println("Trạng thái mới:");
+            System.out.println("Trang thai hien tai: " + copy.getStatus());
+            System.out.println("Trang thai moi:");
             System.out.println("1. " + CopyStatus.GOOD);
             System.out.println("2. " + CopyStatus.DAMAGED);
             System.out.println("3. " + CopyStatus.LOST);
-            System.out.print("Chọn: ");
+            System.out.print("Chon: ");
             int choice = getIntInput();
             
             switch (choice) {
@@ -335,86 +335,86 @@ public class LibraryManagementPhase2 {
                 case 2: copy.setStatus(CopyStatus.DAMAGED); break;
                 case 3: copy.setStatus(CopyStatus.LOST); break;
                 default:
-                    System.out.println("Lựa chọn không hợp lệ!");
+                    System.out.println("Lua chon khong hop le!");
                     return;
             }
             
             copyDAO.update(copy);
-            System.out.println("✓ Cập nhật thành công!");
+            System.out.println("Cap nhat thanh cong!");
         } catch (SQLException e) {
-            System.out.println("✗ Lỗi: " + e.getMessage());
+            System.out.println("Loi: " + e.getMessage());
         }
     }
     
     /**
-     * Xóa bản sao
+     * Xoa ban sao
      */
     private void deleteCopy() {
-        System.out.println("\n--- XÓA BẢN SAO ---");
-        System.out.print("Nhập mã bản sao cần xóa: ");
+        System.out.println("\n--- XOA BAN SAO ---");
+        System.out.print("Nhap ma ban sao can xoa: ");
         String id = scanner.nextLine();
         
         try {
             copyDAO.delete(id);
-            System.out.println("✓ Xóa thành công!");
+            System.out.println("Xoa thanh cong!");
         } catch (SQLException e) {
-            System.out.println("✗ Lỗi: " + e.getMessage());
+            System.out.println("Loi: " + e.getMessage());
         }
     }
     
     /**
-     * Xem bản sao theo tài liệu
+     * Xem ban sao theo tai lieu
      */
     private void viewCopiesByDocument() {
-        System.out.print("Nhập mã tài liệu: ");
+        System.out.print("Nhap ma tai lieu: ");
         String documentId = scanner.nextLine();
         
         try {
             List<Copy> copies = copyDAO.findByDocumentId(documentId);
             
             if (copies.isEmpty()) {
-                System.out.println("Không có bản sao nào cho tài liệu này.");
+                System.out.println("Khong co ban sao nao cho tai lieu nay.");
                 return;
             }
             
-            System.out.println("\n=== BẢN SAO CỦA TÀI LIỆU " + documentId + " ===");
+            System.out.println("\n=== BAN SAO CUA TAI LIEU " + documentId + " ===");
             copies.forEach(System.out::println);
         } catch (SQLException e) {
-            System.out.println("✗ Lỗi: " + e.getMessage());
+            System.out.println("Loi: " + e.getMessage());
         }
     }
     
     /**
-     * Xem tất cả bản sao
+     * Xem tat ca ban sao
      */
     private void viewAllCopies() {
         try {
             List<Copy> copies = copyDAO.findAll();
             
             if (copies.isEmpty()) {
-                System.out.println("Không có bản sao nào.");
+                System.out.println("Khong co ban sao nao.");
                 return;
             }
             
-            System.out.println("\n=== TẤT CẢ BẢN SAO ===");
+            System.out.println("\n=== TAT CA BAN SAO ===");
             copies.forEach(System.out::println);
         } catch (SQLException e) {
-            System.out.println("✗ Lỗi: " + e.getMessage());
+            System.out.println("Loi: " + e.getMessage());
         }
     }
     
     /**
-     * Menu tìm kiếm và thống kê
+     * Menu tim kiem va thong ke
      */
     private void searchAndStatisticsMenu() {
         while (true) {
-            System.out.println("\n--- TÌM KIẾM & THỐNG KÊ ---");
-            System.out.println("1. Tìm tài liệu theo tiêu đề");
-            System.out.println("2. Tìm tài liệu theo tác giả");
-            System.out.println("3. Sắp xếp tài liệu theo tên");
-            System.out.println("4. Thống kê bản sao theo trạng thái");
-            System.out.println("0. Quay lại");
-            System.out.print("Chọn: ");
+            System.out.println("\n--- TIM KIEM & THONG KE ---");
+            System.out.println("1. Tim tai lieu theo tieu de");
+            System.out.println("2. Tim tai lieu theo tac gia");
+            System.out.println("3. Sap xep tai lieu theo ten");
+            System.out.println("4. Thong ke ban sao theo trang thai");
+            System.out.println("0. Quay lai");
+            System.out.print("Chon: ");
             
             int choice = getIntInput();
             
@@ -434,84 +434,84 @@ public class LibraryManagementPhase2 {
                 case 0:
                     return;
                 default:
-                    System.out.println("Lựa chọn không hợp lệ!");
+                    System.out.println("Lua chon khong hop le!");
             }
         }
     }
     
     /**
-     * Tìm kiếm theo tiêu đề
+     * Tim kiem theo tieu de
      */
     private void searchByTitle() {
-        System.out.print("Nhập từ khóa tiêu đề: ");
+        System.out.print("Nhap tu khoa tieu de: ");
         String keyword = scanner.nextLine();
         
         try {
             List<Document> results = documentDAO.searchByTitle(keyword);
             
             if (results.isEmpty()) {
-                System.out.println("Không tìm thấy tài liệu nào.");
+                System.out.println("Khong tim thay tai lieu nao.");
             } else {
-                System.out.println("\n=== KẾT QUẢ TÌM KIẾM ===");
+                System.out.println("\n=== KET QUA TIM KIEM ===");
                 results.forEach(System.out::println);
             }
         } catch (SQLException e) {
-            System.out.println("✗ Lỗi: " + e.getMessage());
+            System.out.println("Loi: " + e.getMessage());
         }
     }
     
     /**
-     * Tìm kiếm theo tác giả
+     * Tim kiem theo tac gia
      */
     private void searchByAuthor() {
-        System.out.print("Nhập tên tác giả: ");
+        System.out.print("Nhap ten tac gia: ");
         String author = scanner.nextLine();
         
         try {
             List<Document> results = documentDAO.searchByAuthor(author);
             
             if (results.isEmpty()) {
-                System.out.println("Không tìm thấy tài liệu nào.");
+                System.out.println("Khong tim thay tai lieu nao.");
             } else {
-                System.out.println("\n=== KẾT QUẢ TÌM KIẾM ===");
+                System.out.println("\n=== KET QUA TIM KIEM ===");
                 results.forEach(System.out::println);
             }
         } catch (SQLException e) {
-            System.out.println("✗ Lỗi: " + e.getMessage());
+            System.out.println("Loi: " + e.getMessage());
         }
     }
     
     /**
-     * Sắp xếp tài liệu
+     * Sap xep tai lieu
      */
     private void sortDocuments() {
         try {
             List<Document> sorted = documentDAO.findAllSortedByTitle();
             
-            System.out.println("\n=== TÀI LIỆU ĐÃ SẮP XẾP THEO TÊN ===");
+            System.out.println("\n=== TAI LIEU DA SAP XEP THEO TEN ===");
             sorted.forEach(System.out::println);
         } catch (SQLException e) {
-            System.out.println("✗ Lỗi: " + e.getMessage());
+            System.out.println("Loi: " + e.getMessage());
         }
     }
     
     /**
-     * Thống kê theo trạng thái
+     * Thong ke theo trang thai
      */
     private void statisticsByStatus() {
         try {
             Map<CopyStatus, Long> stats = copyDAO.getStatisticsByStatus();
             
-            System.out.println("\n=== THỐNG KÊ BẢN SAO THEO TRẠNG THÁI ===");
+            System.out.println("\n=== THONG KE BAN SAO THEO TRANG THAI ===");
             stats.forEach((status, count) -> 
-                System.out.println(status + ": " + count + " bản"));
+                System.out.println(status + ": " + count + " ban"));
         } catch (SQLException e) {
-            System.out.println("✗ Lỗi: " + e.getMessage());
+            System.out.println("Loi: " + e.getMessage());
         }
     }
     
     /**
-     * Đọc số nguyên từ input
+     * Doc so nguyen tu input
      */
     private int getIntInput() {
         try {
@@ -522,7 +522,7 @@ public class LibraryManagementPhase2 {
     }
     
     /**
-     * Main method để chạy chương trình
+     * Main method de chay chuong trinh
      */
     public static void main(String[] args) {
         LibraryManagementPhase2 app = new LibraryManagementPhase2();

@@ -1,17 +1,17 @@
 package ASM.exception;
 
 /**
- * Exception được ném ra khi phát hiện mã ID bị trùng lặp
- * Sử dụng để kiểm tra tính duy nhất của ID tài liệu và bản sao
+ * Exception duoc nem ra khi phat hien ma ID bi trung lap
+ * Su dung de kiem tra tinh duy nhat cua ID tai lieu va ban sao
  */
 public class DuplicateIdException extends Exception {
     
-    // Constructor với thông báo lỗi
+    // Constructor voi thong bao loi
     public DuplicateIdException(String message) {
         super(message);
     }
     
-    // Constructor với thông báo và nguyên nhân
+    // Constructor voi thong bao va nguyen nhan
     public DuplicateIdException(String message, Throwable cause) {
         super(message, cause);
     }

@@ -5,24 +5,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Lớp đại diện cho Tài liệu trong thư viện
- * Mỗi tài liệu có thể có nhiều bản sao (quan hệ 1-N)
+ * Lop dai dien cho Tai lieu trong thu vien
+ * Moi tai lieu co the co nhieu ban sao (quan he 1-N)
  */
 public class Document implements Serializable {
     private static final long serialVersionUID = 1L;
     
-    private String id;              // Mã tài liệu (duy nhất)
-    private String title;           // Tiêu đề
-    private String author;          // Tác giả
-    private String category;        // Thể loại
-    private List<Copy> copies;      // Danh sách các bản sao (quan hệ 1-N)
+    private String id;              // Ma tai lieu (duy nhat)
+    private String title;           // Tieu de
+    private String author;          // Tac gia
+    private String category;        // The loai
+    private List<Copy> copies;      // Danh sach cac ban sao (quan he 1-N)
     
-    // Constructor mặc định
+    // Constructor mac dinh
     public Document() {
         this.copies = new ArrayList<>();
     }
     
-    // Constructor đầy đủ
+    // Constructor day du
     public Document(String id, String title, String author, String category) {
         this.id = id;
         this.title = title;
@@ -31,7 +31,7 @@ public class Document implements Serializable {
         this.copies = new ArrayList<>();
     }
     
-    // Getters và Setters
+    // Getters va Setters
     public String getId() {
         return id;
     }
@@ -72,13 +72,13 @@ public class Document implements Serializable {
         this.copies = copies;
     }
     
-    // Thêm bản sao vào tài liệu
+    // Them ban sao vao tai lieu
     public void addCopy(Copy copy) {
         this.copies.add(copy);
-        copy.setDocument(this);  // Thiết lập quan hệ 2 chiều
+        copy.setDocument(this);  // Thiet lap quan he 2 chieu
     }
     
-    // Xóa bản sao khỏi tài liệu
+    // Xoa ban sao khoi tai lieu
     public void removeCopy(Copy copy) {
         this.copies.remove(copy);
     }

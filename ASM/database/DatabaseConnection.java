@@ -6,20 +6,20 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * Lớp quản lý kết nối đến cơ sở dữ liệu
- * Sử dụng SQL Server
+ * Lop quan ly ket noi den co so du lieu
+ * Su dung SQL Server
  */
 public class DatabaseConnection {
-    // Thông tin kết nối database
+    // Thong tin ket noi database
     private static final String URL = "jdbc:sqlserver://localhost:1433;databaseName=LibraryManagement;encrypt=false;trustServerCertificate=true";
-    private static final String USER = "vanphuoc406"; // Thay đổi username của bạn
-    private static final String PASSWORD = "310105"; // Thay đổi password của bạn
+    private static final String USER = "vanphuoc406"; // Thay doi username cua ban
+    private static final String PASSWORD = "310105"; // Thay doi password cua ban
 
     private static Connection connection = null;
 
     /**
-     * Lấy kết nối đến database
-     * Sử dụng Singleton pattern
+     * Lay ket noi den database
+     * Su dung Singleton pattern
      */
     public static Connection getConnection() {
         try {
@@ -27,40 +27,40 @@ public class DatabaseConnection {
                 // Load SQL Server JDBC Driver
                 Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
                 connection = DriverManager.getConnection(URL, USER, PASSWORD);
-                System.out.println("✓ Kết nối database thành công!");
+                System.out.println("Ket noi database thanh cong!");
             }
         } catch (ClassNotFoundException e) {
-            System.err.println("✗ Không tìm thấy SQL Server JDBC Driver!");
-            System.err.println("  Thêm dependency: mssql-jdbc vào project");
+            System.err.println("Khong tim thay SQL Server JDBC Driver!");
+            System.err.println("Them dependency: mssql-jdbc vao project");
         } catch (SQLException e) {
-            System.err.println("✗ Lỗi kết nối database: " + e.getMessage());
+            System.err.println("Loi ket noi database: " + e.getMessage());
         }
         return connection;
     }
 
     /**
-     * Đóng kết nối database
+     * Dong ket noi database
      */
     public static void closeConnection() {
         try {
             if (connection != null && !connection.isClosed()) {
                 connection.close();
-                System.out.println("✓ Đã đóng kết nối database.");
+                System.out.println("Da dong ket noi database.");
             }
         } catch (SQLException e) {
-            System.err.println("✗ Lỗi khi đóng kết nối: " + e.getMessage());
+            System.err.println("Loi khi dong ket noi: " + e.getMessage());
         }
     }
 
     /**
-     * Kiểm tra database đã được khởi tạo chưa
-     * Lưu ý: Chạy file LibraryManagement_Complete.sql trước khi sử dụng
+     * Kiem tra database da duoc khoi tao chua
+     * Luu y: Chay file LibraryManagement_Complete.sql truoc khi su dung
      */
     public static void checkDatabase() {
         try (Connection conn = getConnection();
-                Statement stmt = conn.createStatement()) {
+             Statement stmt = conn.createStatement()) {
 
-            // Kiểm tra các bảng chính có tồn tại không
+            // Kiem tra cac bang chinh co ton tai khong
             String checkQuery = """
                     SELECT COUNT(*) as table_count
                     FROM INFORMATION_SCHEMA.TABLES
@@ -69,33 +69,33 @@ public class DatabaseConnection {
             var rs = stmt.executeQuery(checkQuery);
 
             if (rs.next() && rs.getInt("table_count") == 5) {
-                System.out.println("✓ Database đã được khởi tạo đầy đủ.");
+                System.out.println("Database da duoc khoi tao day du.");
             } else {
-                System.out.println("⚠ Cảnh báo: Database chưa đầy đủ!");
-                System.out.println("  Vui lòng chạy file LibraryManagement_Complete.sql trước.");
+                System.out.println("Canh bao: Database chua day du!");
+                System.out.println("Vui long chay file LibraryManagement_Complete.sql truoc.");
             }
 
         } catch (SQLException e) {
-            System.err.println("✗ Lỗi kiểm tra database: " + e.getMessage());
-            System.err.println("  Vui lòng chạy file LibraryManagement_Complete.sql để khởi tạo database.");
+            System.err.println("Loi kiem tra database: " + e.getMessage());
+            System.err.println("Vui long chay file LibraryManagement_Complete.sql de khoi tao database.");
         }
     }
 
     /**
-     * Test kết nối database
+     * Test ket noi database
      */
     public static void testConnection() {
         Connection conn = getConnection();
         if (conn != null) {
-            System.out.println("✓ Test kết nối thành công!");
+            System.out.println("Test ket noi thanh cong!");
             try {
-                System.out.println("  Database: " + conn.getCatalog());
-                System.out.println("  URL: " + conn.getMetaData().getURL());
+                System.out.println("Database: " + conn.getCatalog());
+                System.out.println("URL: " + conn.getMetaData().getURL());
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         } else {
-            System.out.println("✗ Test kết nối thất bại!");
+            System.out.println("Test ket noi that bai!");
         }
     }
 }

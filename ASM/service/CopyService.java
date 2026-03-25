@@ -8,10 +8,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Service quản lý các thao tác CRUD cho Bản sao tài liệu
+ * Service quan ly cac thao tac CRUD cho Ban sao tai lieu
  */
 public class CopyService {
-    // Map lưu trữ bản sao với key là ID
+    // Map luu tru ban sao voi key la ID
     private Map<String, Copy> copies;
     private DocumentService documentService;
     
@@ -21,71 +21,71 @@ public class CopyService {
     }
     
     /**
-     * Thêm bản sao mới cho tài liệu
-     * @throws DuplicateIdException nếu ID bản sao đã tồn tại
+     * Them ban sao moi cho tai lieu
+     * @throws DuplicateIdException neu ID ban sao da ton tai
      */
     public void addCopy(Copy copy) throws DuplicateIdException {
         if (copies.containsKey(copy.getId())) {
-            throw new DuplicateIdException("Mã bản sao '" + copy.getId() + "' đã tồn tại!");
+            throw new DuplicateIdException("Ma ban sao '" + copy.getId() + "' da ton tai!");
         }
         
-        // Kiểm tra tài liệu có tồn tại không
+        // Kiem tra tai lieu co ton tai khong
         Document document = documentService.findById(copy.getDocumentId());
         if (document == null) {
-            System.out.println("✗ Không tìm thấy tài liệu với ID: " + copy.getDocumentId());
+            System.out.println("Khong tim thay tai lieu voi ID: " + copy.getDocumentId());
             return;
         }
         
         copies.put(copy.getId(), copy);
-        document.addCopy(copy);  // Thêm vào danh sách bản sao của tài liệu
-        System.out.println("✓ Đã thêm bản sao: " + copy.getId());
+        document.addCopy(copy);  // Them vao danh sach ban sao cua tai lieu
+        System.out.println("Da them ban sao: " + copy.getId());
     }
     
     /**
-     * Cập nhật thông tin bản sao
+     * Cap nhat thong tin ban sao
      */
     public void updateCopy(Copy copy) {
         if (copies.containsKey(copy.getId())) {
             copies.put(copy.getId(), copy);
-            System.out.println("✓ Đã cập nhật bản sao: " + copy.getId());
+            System.out.println("Da cap nhat ban sao: " + copy.getId());
         } else {
-            System.out.println("✗ Không tìm thấy bản sao với ID: " + copy.getId());
+            System.out.println("Khong tim thay ban sao voi ID: " + copy.getId());
         }
     }
     
     /**
-     * Xóa bản sao theo ID
+     * Xoa ban sao theo ID
      */
     public void deleteCopy(String id) {
         Copy copy = copies.remove(id);
         if (copy != null) {
-            // Xóa khỏi danh sách bản sao của tài liệu
+            // Xoa khoi danh sach ban sao cua tai lieu
             Document document = documentService.findById(copy.getDocumentId());
             if (document != null) {
                 document.removeCopy(copy);
             }
-            System.out.println("✓ Đã xóa bản sao: " + id);
+            System.out.println("Da xoa ban sao: " + id);
         } else {
-            System.out.println("✗ Không tìm thấy bản sao với ID: " + id);
+            System.out.println("Khong tim thay ban sao voi ID: " + id);
         }
     }
     
     /**
-     * Tìm bản sao theo ID
+     * Tim ban sao theo ID
      */
     public Copy findById(String id) {
         return copies.get(id);
     }
     
     /**
-     * Lấy tất cả bản sao
+     * Lay tat ca ban sao
      */
     public List<Copy> getAllCopies() {
         return new ArrayList<>(copies.values());
     }
     
     /**
-     * Lấy tất cả bản sao của một tài liệu
+     * Lay tat ca ban sao cua mot tai lieu
      */
     public List<Copy> getCopiesByDocumentId(String documentId) {
         return copies.values().stream()
@@ -94,7 +94,7 @@ public class CopyService {
     }
     
     /**
-     * Lấy bản sao theo trạng thái
+     * Lay ban sao theo trang thai
      */
     public List<Copy> getCopiesByStatus(CopyStatus status) {
         return copies.values().stream()
@@ -103,7 +103,7 @@ public class CopyService {
     }
     
     /**
-     * Cập nhật trạng thái nhiều bản sao cùng lúc theo điều kiện
+     * Cap nhat trang thai nhieu ban sao cung luc theo dieu kien
      */
     public void updateStatusBatch(String documentId, CopyStatus oldStatus, CopyStatus newStatus) {
         List<Copy> toUpdate = copies.values().stream()
@@ -112,12 +112,12 @@ public class CopyService {
                 .collect(Collectors.toList());
         
         toUpdate.forEach(copy -> copy.setStatus(newStatus));
-        System.out.println("✓ Đã cập nhật " + toUpdate.size() + " bản sao từ " + 
+        System.out.println("Da cap nhat " + toUpdate.size() + " ban sao tu " + 
                           oldStatus + " sang " + newStatus);
     }
     
     /**
-     * Thống kê số lượng bản sao theo trạng thái
+     * Thong ke so luong ban sao theo trang thai
      */
     public Map<CopyStatus, Long> getStatisticsByStatus() {
         return copies.values().stream()
@@ -125,21 +125,21 @@ public class CopyService {
     }
     
     /**
-     * Hiển thị tất cả bản sao của một tài liệu
+     * Hien thi tat ca ban sao cua mot tai lieu
      */
     public void displayCopiesByDocument(String documentId) {
         List<Copy> documentCopies = getCopiesByDocumentId(documentId);
         
         if (documentCopies.isEmpty()) {
-            System.out.println("Tài liệu này chưa có bản sao nào.");
+            System.out.println("Tai lieu nay chua co ban sao nao.");
             return;
         }
         
-        System.out.println("\n=== BẢN SAO CỦA TÀI LIỆU " + documentId + " ===");
+        System.out.println("\n=== BAN SAO CUA TAI LIEU " + documentId + " ===");
         documentCopies.forEach(System.out::println);
     }
     
-    // Setter và Getter cho việc lưu/load dữ liệu
+    // Setter va Getter cho viec luu/load du lieu
     public void setCopies(Map<String, Copy> copies) {
         this.copies = copies;
     }

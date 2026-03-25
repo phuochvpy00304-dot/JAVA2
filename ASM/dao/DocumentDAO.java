@@ -8,19 +8,19 @@ import java.util.List;
 
 /**
  * Data Access Object cho Document
- * Thực hiện các thao tác CRUD với database
+ * Thuc hien cac thao tac CRUD voi database
  */
 public class DocumentDAO {
     
     /**
-     * Thêm tài liệu mới vào database (alias cho insert)
+     * Them tai lieu moi vao database (alias cho insert)
      */
     public boolean create(Document document) throws SQLException {
         return insert(document);
     }
     
     /**
-     * Thêm tài liệu mới vào database
+     * Them tai lieu moi vao database
      */
     public boolean insert(Document document) throws SQLException {
         String sql = "INSERT INTO DOCUMENT (id, title, author, category) VALUES (?, ?, ?, ?)";
@@ -35,17 +35,17 @@ public class DocumentDAO {
             
             int rows = pstmt.executeUpdate();
             if (rows > 0) {
-                System.out.println("✓ Đã thêm tài liệu vào database: " + document.getTitle());
+                System.out.println("Da them tai lieu vao database: " + document.getTitle());
                 return true;
             }
         } catch (SQLException e) {
-            System.err.println("✗ Lỗi khi thêm tài liệu: " + e.getMessage());
+            System.err.println("Loi khi them tai lieu: " + e.getMessage());
         }
         return false;
     }
     
     /**
-     * Cập nhật thông tin tài liệu
+     * Cap nhat thong tin tai lieu
      */
     public boolean update(Document document) throws SQLException {
         String sql = "UPDATE DOCUMENT SET title = ?, author = ?, category = ? WHERE id = ?";
@@ -60,18 +60,18 @@ public class DocumentDAO {
             
             int rows = pstmt.executeUpdate();
             if (rows > 0) {
-                System.out.println("✓ Đã cập nhật tài liệu: " + document.getTitle());
+                System.out.println("Da cap nhat tai lieu: " + document.getTitle());
                 return true;
             }
         } catch (SQLException e) {
-            System.err.println("✗ Lỗi khi cập nhật tài liệu: " + e.getMessage());
+            System.err.println("Loi khi cap nhat tai lieu: " + e.getMessage());
         }
         return false;
     }
     
     /**
-     * Xóa tài liệu theo ID
-     * Cascade delete sẽ tự động xóa các bản sao liên quan
+     * Xoa tai lieu theo ID
+     * Cascade delete se tu dong xoa cac ban sao lien quan
      */
     public boolean delete(String id) throws SQLException {
         String sql = "DELETE FROM DOCUMENT WHERE id = ?";
@@ -83,17 +83,17 @@ public class DocumentDAO {
             
             int rows = pstmt.executeUpdate();
             if (rows > 0) {
-                System.out.println("✓ Đã xóa tài liệu ID: " + id);
+                System.out.println("Da xoa tai lieu ID: " + id);
                 return true;
             }
         } catch (SQLException e) {
-            System.err.println("✗ Lỗi khi xóa tài liệu: " + e.getMessage());
+            System.err.println("Loi khi xoa tai lieu: " + e.getMessage());
         }
         return false;
     }
     
     /**
-     * Tìm tài liệu theo ID
+     * Tim tai lieu theo ID
      */
     public Document findById(String id) {
         String sql = "SELECT * FROM DOCUMENT WHERE id = ?";
@@ -108,13 +108,13 @@ public class DocumentDAO {
                 return extractDocumentFromResultSet(rs);
             }
         } catch (SQLException e) {
-            System.err.println("✗ Lỗi khi tìm tài liệu: " + e.getMessage());
+            System.err.println("Loi khi tim tai lieu: " + e.getMessage());
         }
         return null;
     }
     
     /**
-     * Lấy tất cả tài liệu
+     * Lay tat ca tai lieu
      */
     public List<Document> findAll() throws SQLException {
         List<Document> documents = new ArrayList<>();
@@ -128,19 +128,19 @@ public class DocumentDAO {
                 documents.add(extractDocumentFromResultSet(rs));
             }
         } catch (SQLException e) {
-            System.err.println("✗ Lỗi khi lấy danh sách tài liệu: " + e.getMessage());
+            System.err.println("Loi khi lay danh sach tai lieu: " + e.getMessage());
         }
         return documents;
     }
     
     /**
-     * Tìm kiếm tài liệu theo nhiều tiêu chí
+     * Tim kiem tai lieu theo nhieu tieu chi
      */
     public List<Document> search(String title, String author, String category) {
         List<Document> documents = new ArrayList<>();
         StringBuilder sql = new StringBuilder("SELECT * FROM DOCUMENT WHERE 1=1");
         
-        // Xây dựng câu query động
+        // Xay dung cau query dong
         if (title != null && !title.isEmpty()) {
             sql.append(" AND title LIKE ?");
         }
@@ -170,13 +170,13 @@ public class DocumentDAO {
                 documents.add(extractDocumentFromResultSet(rs));
             }
         } catch (SQLException e) {
-            System.err.println("✗ Lỗi khi tìm kiếm: " + e.getMessage());
+            System.err.println("Loi khi tim kiem: " + e.getMessage());
         }
         return documents;
     }
     
     /**
-     * Sắp xếp tài liệu theo cột
+     * Sap xep tai lieu theo cot
      */
     public List<Document> findAllSorted(String sortBy, boolean ascending) {
         List<Document> documents = new ArrayList<>();
@@ -191,13 +191,13 @@ public class DocumentDAO {
                 documents.add(extractDocumentFromResultSet(rs));
             }
         } catch (SQLException e) {
-            System.err.println("✗ Lỗi khi sắp xếp: " + e.getMessage());
+            System.err.println("Loi khi sap xep: " + e.getMessage());
         }
         return documents;
     }
     
     /**
-     * Phân trang danh sách tài liệu
+     * Phan trang danh sach tai lieu
      */
     public List<Document> findWithPagination(int page, int pageSize) {
         List<Document> documents = new ArrayList<>();
@@ -215,13 +215,13 @@ public class DocumentDAO {
                 documents.add(extractDocumentFromResultSet(rs));
             }
         } catch (SQLException e) {
-            System.err.println("✗ Lỗi khi phân trang: " + e.getMessage());
+            System.err.println("Loi khi phan trang: " + e.getMessage());
         }
         return documents;
     }
     
     /**
-     * Đếm tổng số tài liệu
+     * Dem tong so tai lieu
      */
     public int count() {
         String sql = "SELECT COUNT(*) FROM DOCUMENT";
@@ -234,13 +234,13 @@ public class DocumentDAO {
                 return rs.getInt(1);
             }
         } catch (SQLException e) {
-            System.err.println("✗ Lỗi khi đếm tài liệu: " + e.getMessage());
+            System.err.println("Loi khi dem tai lieu: " + e.getMessage());
         }
         return 0;
     }
     
     /**
-     * Tìm kiếm tài liệu theo tiêu đề
+     * Tim kiem tai lieu theo tieu de
      */
     public List<Document> searchByTitle(String keyword) throws SQLException {
         List<Document> documents = new ArrayList<>();
@@ -260,7 +260,7 @@ public class DocumentDAO {
     }
     
     /**
-     * Tìm kiếm tài liệu theo tác giả
+     * Tim kiem tai lieu theo tac gia
      */
     public List<Document> searchByAuthor(String author) throws SQLException {
         List<Document> documents = new ArrayList<>();
@@ -280,7 +280,7 @@ public class DocumentDAO {
     }
     
     /**
-     * Lấy tất cả tài liệu đã sắp xếp theo tiêu đề
+     * Lay tat ca tai lieu da sap xep theo tieu de
      */
     public List<Document> findAllSortedByTitle() throws SQLException {
         List<Document> documents = new ArrayList<>();
@@ -298,7 +298,7 @@ public class DocumentDAO {
     }
     
     /**
-     * Lấy tài liệu kèm số lượng bản sao (sử dụng JOIN)
+     * Lay tai lieu kem so luong ban sao (su dung JOIN)
      */
     public List<Document> findAllWithCopyCount() {
         List<Document> documents = new ArrayList<>();
@@ -316,17 +316,17 @@ public class DocumentDAO {
             while (rs.next()) {
                 Document doc = extractDocumentFromResultSet(rs);
                 int copyCount = rs.getInt("copy_count");
-                System.out.println(doc + " - Số bản sao: " + copyCount);
+                System.out.println(doc + " - So ban sao: " + copyCount);
                 documents.add(doc);
             }
         } catch (SQLException e) {
-            System.err.println("✗ Lỗi khi JOIN: " + e.getMessage());
+            System.err.println("Loi khi JOIN: " + e.getMessage());
         }
         return documents;
     }
     
     /**
-     * Trích xuất Document từ ResultSet
+     * Trich xuat Document tu ResultSet
      */
     private Document extractDocumentFromResultSet(ResultSet rs) throws SQLException {
         String id = rs.getString("id");

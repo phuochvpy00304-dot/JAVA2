@@ -1,12 +1,12 @@
 package ASM.model;
 
 /**
- * Enum định nghĩa các trạng thái của bản sao tài liệu
+ * Enum dinh nghia cac trang thai cua ban sao tai lieu
  */
 public enum CopyStatus {
-    GOOD("Còn tốt"),           // Bản sao còn tốt
-    DAMAGED("Hư hỏng"),        // Bản sao bị hư hỏng
-    LOST("Mất");               // Bản sao bị mất
+    GOOD("Con tot"),           // Ban sao con tot
+    DAMAGED("Hu hong"),        // Ban sao bi hu hong
+    LOST("Mat");               // Ban sao bi mat
     
     private final String description;
     
@@ -15,7 +15,7 @@ public enum CopyStatus {
         this.description = description;
     }
     
-    // Lấy mô tả trạng thái
+    // Lay mo ta trang thai
     public String getDescription() {
         return description;
     }
