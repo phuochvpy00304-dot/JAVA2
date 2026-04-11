@@ -31,7 +31,7 @@ public class LibraryManagementPhase2 {
         System.out.println("\n=== KHOI TAO CO SO DU LIEU ===");
         try (Connection conn = DatabaseConnection.getConnection()) {
             createTables(conn);
-            System.out.println("Ket noi database thanh cong!");
+        //    System.out.println("Ket noi database thanh cong!");
         } catch (SQLException e) {
             System.err.println("Loi ket noi database: " + e.getMessage());
         }

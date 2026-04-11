@@ -48,8 +48,3 @@ public class Product {
         return "Product{id='" + id + "', name='" + name + "', basePrice=" + basePrice + "}";
     }
 }
-public double finalPrice(){return basePrice;}
-@Override
-public String toString(){
-    reutrn "Products{id='" + id+ "'zzz ,name '" + name + " ', baserice ="+basePrice+"}";}
-}

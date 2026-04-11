@@ -26,7 +26,7 @@ public class CopyDAO {
      * Them ban sao moi vao database
      */
     public boolean insert(Copy copy) throws SQLException {
-        String sql = "INSERT INTO DOCUMENT_COPY (id, document_id, status) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO copies (id, document_id, status) VALUES (?, ?, ?)";
         
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -50,7 +50,7 @@ public class CopyDAO {
      * Cap nhat trang thai ban sao
      */
     public boolean update(Copy copy) throws SQLException {
-        String sql = "UPDATE DOCUMENT_COPY SET status = ? WHERE id = ?";
+        String sql = "UPDATE copies SET status = ? WHERE id = ?";
         
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -73,7 +73,7 @@ public class CopyDAO {
      * Xoa ban sao theo ID
      */
     public boolean delete(String id) throws SQLException {
-        String sql = "DELETE FROM DOCUMENT_COPY WHERE id = ?";
+        String sql = "DELETE FROM copies WHERE id = ?";
         
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -95,7 +95,7 @@ public class CopyDAO {
      * Tim ban sao theo ID
      */
     public Copy findById(String id) {
-        String sql = "SELECT * FROM DOCUMENT_COPY WHERE id = ?";
+        String sql = "SELECT * FROM copies WHERE id = ?";
         
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -117,7 +117,7 @@ public class CopyDAO {
      */
     public List<Copy> findAll() throws SQLException {
         List<Copy> copies = new ArrayList<>();
-        String sql = "SELECT * FROM DOCUMENT_COPY";
+        String sql = "SELECT * FROM copies";
         
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement();
@@ -137,7 +137,7 @@ public class CopyDAO {
      */
     public List<Copy> findByDocumentId(String documentId) throws SQLException {
         List<Copy> copies = new ArrayList<>();
-        String sql = "SELECT * FROM DOCUMENT_COPY WHERE document_id = ?";
+        String sql = "SELECT * FROM copies WHERE document_id = ?";
         
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -159,7 +159,7 @@ public class CopyDAO {
      */
     public List<Copy> findByStatus(CopyStatus status) {
         List<Copy> copies = new ArrayList<>();
-        String sql = "SELECT * FROM DOCUMENT_COPY WHERE status = ?";
+        String sql = "SELECT * FROM copies WHERE status = ?";
         
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -181,7 +181,7 @@ public class CopyDAO {
      * Thay doi trang thai cua tat ca ban sao thuoc mot tai lieu
      */
     public boolean updateStatusBatch(String documentId, CopyStatus oldStatus, CopyStatus newStatus) {
-        String sql = "UPDATE DOCUMENT_COPY SET status = ? WHERE document_id = ? AND status = ?";
+        String sql = "UPDATE copies SET status = ? WHERE document_id = ? AND status = ?";
         Connection conn = null;
         
         try {
@@ -232,7 +232,7 @@ public class CopyDAO {
      * Them nhieu ban sao cung luc (su dung Transaction)
      */
     public boolean insertBatch(List<Copy> copies) {
-        String sql = "INSERT INTO DOCUMENT_COPY (id, document_id, status) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO copies (id, document_id, status) VALUES (?, ?, ?)";
         Connection conn = null;
         
         try {
@@ -285,7 +285,7 @@ public class CopyDAO {
         Map<CopyStatus, Long> stats = new HashMap<>();
         String sql = """
             SELECT status, COUNT(*) as count
-            FROM DOCUMENT_COPY
+            FROM copies
             GROUP BY status
             """;
         
@@ -308,7 +308,7 @@ public class CopyDAO {
     public void displayStatisticsByStatus() {
         String sql = """
             SELECT status, COUNT(*) as count
-            FROM DOCUMENT_COPY
+            FROM copies
             GROUP BY status
             """;
         
@@ -333,8 +333,8 @@ public class CopyDAO {
     public void displayCopiesWithDocumentInfo() {
         String sql = """
             SELECT c.id, c.status, d.title, d.author
-            FROM DOCUMENT_COPY c
-            INNER JOIN DOCUMENT d ON c.document_id = d.id
+            FROM copies c
+            INNER JOIN documents d ON c.document_id = d.id
             ORDER BY d.title
             """;
         

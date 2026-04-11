@@ -23,7 +23,7 @@ public class DocumentDAO {
      * Them tai lieu moi vao database
      */
     public boolean insert(Document document) throws SQLException {
-        String sql = "INSERT INTO DOCUMENT (id, title, author, category) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO documents (id, title, author, category) VALUES (?, ?, ?, ?)";
         
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -48,7 +48,7 @@ public class DocumentDAO {
      * Cap nhat thong tin tai lieu
      */
     public boolean update(Document document) throws SQLException {
-        String sql = "UPDATE DOCUMENT SET title = ?, author = ?, category = ? WHERE id = ?";
+        String sql = "UPDATE documents SET title = ?, author = ?, category = ? WHERE id = ?";
         
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -74,7 +74,7 @@ public class DocumentDAO {
      * Cascade delete se tu dong xoa cac ban sao lien quan
      */
     public boolean delete(String id) throws SQLException {
-        String sql = "DELETE FROM DOCUMENT WHERE id = ?";
+        String sql = "DELETE FROM documents WHERE id = ?";
         
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -96,7 +96,7 @@ public class DocumentDAO {
      * Tim tai lieu theo ID
      */
     public Document findById(String id) {
-        String sql = "SELECT * FROM DOCUMENT WHERE id = ?";
+        String sql = "SELECT * FROM documents WHERE id = ?";
         
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -118,7 +118,7 @@ public class DocumentDAO {
      */
     public List<Document> findAll() throws SQLException {
         List<Document> documents = new ArrayList<>();
-        String sql = "SELECT * FROM DOCUMENT";
+        String sql = "SELECT * FROM documents";
         
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement();
@@ -138,7 +138,7 @@ public class DocumentDAO {
      */
     public List<Document> search(String title, String author, String category) {
         List<Document> documents = new ArrayList<>();
-        StringBuilder sql = new StringBuilder("SELECT * FROM DOCUMENT WHERE 1=1");
+        StringBuilder sql = new StringBuilder("SELECT * FROM documents WHERE 1=1");
         
         // Xay dung cau query dong
         if (title != null && !title.isEmpty()) {
@@ -181,7 +181,7 @@ public class DocumentDAO {
     public List<Document> findAllSorted(String sortBy, boolean ascending) {
         List<Document> documents = new ArrayList<>();
         String order = ascending ? "ASC" : "DESC";
-        String sql = "SELECT * FROM DOCUMENT ORDER BY " + sortBy + " " + order;
+        String sql = "SELECT * FROM documents ORDER BY " + sortBy + " " + order;
         
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement();
@@ -202,7 +202,7 @@ public class DocumentDAO {
     public List<Document> findWithPagination(int page, int pageSize) {
         List<Document> documents = new ArrayList<>();
         int offset = (page - 1) * pageSize;
-        String sql = "SELECT * FROM DOCUMENT LIMIT ? OFFSET ?";
+        String sql = "SELECT * FROM documents LIMIT ? OFFSET ?";
         
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -224,7 +224,7 @@ public class DocumentDAO {
      * Dem tong so tai lieu
      */
     public int count() {
-        String sql = "SELECT COUNT(*) FROM DOCUMENT";
+        String sql = "SELECT COUNT(*) FROM documents";
         
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement();
@@ -244,7 +244,7 @@ public class DocumentDAO {
      */
     public List<Document> searchByTitle(String keyword) throws SQLException {
         List<Document> documents = new ArrayList<>();
-        String sql = "SELECT * FROM DOCUMENT WHERE LOWER(title) LIKE LOWER(?)";
+        String sql = "SELECT * FROM documents WHERE LOWER(title) LIKE LOWER(?)";
         
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -264,7 +264,7 @@ public class DocumentDAO {
      */
     public List<Document> searchByAuthor(String author) throws SQLException {
         List<Document> documents = new ArrayList<>();
-        String sql = "SELECT * FROM DOCUMENT WHERE LOWER(author) LIKE LOWER(?)";
+        String sql = "SELECT * FROM documents WHERE LOWER(author) LIKE LOWER(?)";
         
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -284,7 +284,7 @@ public class DocumentDAO {
      */
     public List<Document> findAllSortedByTitle() throws SQLException {
         List<Document> documents = new ArrayList<>();
-        String sql = "SELECT * FROM DOCUMENT ORDER BY title";
+        String sql = "SELECT * FROM documents ORDER BY title";
         
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement();
@@ -304,8 +304,8 @@ public class DocumentDAO {
         List<Document> documents = new ArrayList<>();
         String sql = """
             SELECT d.*, COUNT(c.id) as copy_count
-            FROM DOCUMENT d
-            LEFT JOIN DOCUMENT_COPY c ON d.id = c.document_id
+            FROM documents d
+            LEFT JOIN copies c ON d.id = c.document_id
             GROUP BY d.id, d.title, d.author, d.category
             """;
         
